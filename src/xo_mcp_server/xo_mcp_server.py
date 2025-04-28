@@ -5,7 +5,7 @@ import os
 mcp = FastMCP("XO-MCP-Server")
 
 @mcp.tool()
-def k8s_deployment(
+def xo_k8s_deployment(
     registry_user: str, 
     registry_access_token: str, 
     image_name: str, 
@@ -41,7 +41,7 @@ def k8s_deployment(
         return str(e)
 
 @mcp.tool()
-def start_k8s_deployment(
+def xo_start_k8s_deployment(
     workspace_name: str,
     app_name: str
 ) -> str:
@@ -70,7 +70,7 @@ def start_k8s_deployment(
         
 
 @mcp.tool()
-def stop_k8s_deployment(
+def xo_stop_k8s_deployment(
     workspace_name: str,
     app_name: str
 ) -> str:
@@ -98,7 +98,7 @@ def stop_k8s_deployment(
         return str(e)
     
 @mcp.tool()
-def remove_k8s_deployment(
+def xo_remove_k8s_deployment(
     workspace_name: str,
     app_name: str
 ) -> str:
@@ -126,7 +126,7 @@ def remove_k8s_deployment(
         return str(e)   
     
 @mcp.tool()
-def get_k8s_pod_logs(
+def xo_get_k8s_pod_logs(
     workspace_name: str,
     app_name: str
 ) -> str:
@@ -152,4 +152,24 @@ def get_k8s_pod_logs(
         return f"An error occurred: {req_err}"
     except Exception as e:
         return str(e)
+
+@mcp.tool()
+def xo_get_docker_containers() -> str:
+    """
+    Run docker ps command and return the list of running containers
+    """
+    try:
+        # Using subprocess to run the shell command
+        import subprocess
+        result = subprocess.run(['docker', 'ps'], capture_output=True, text=True)
+        if result.returncode == 0:
+            return result.stdout
+        else:
+            return f"Error running docker ps: {result.stderr}"
+    except FileNotFoundError:
+        return "Docker command not found. Please ensure Docker is installed and in PATH"
+    except subprocess.SubprocessError as e:
+        return f"Error executing command: {str(e)}"
+    except Exception as e:
+        return f"An unexpected error occurred: {str(e)}"
 
