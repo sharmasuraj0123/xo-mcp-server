@@ -66,8 +66,7 @@ def xo_start_k8s_deployment(
     except requests.exceptions.RequestException as req_err:
         return f"An error occurred: {req_err}"
     except Exception as e:
-        return str(e)
-        
+        return str(e)     
 
 @mcp.tool()
 def xo_stop_k8s_deployment(
@@ -173,3 +172,138 @@ def xo_get_docker_containers() -> str:
     except Exception as e:
         return f"An unexpected error occurred: {str(e)}"
 
+# @mcp.tool()
+# def xo_harbor_login() -> str:
+#     """
+#     Log in to Harbor using username and password from environment variables.
+#     Environment variables:
+#       - harbor_username
+#       - harbor_password
+#     """
+#     import subprocess
+#     username = os.getenv("harbor_username")
+#     password = os.getenv("harbor_password")
+#     if not username or not password:
+#         return "harbor_username or harbor_password environment variable not set."
+#     try:
+#         result = subprocess.run([
+#             'docker', 'login', 'registry.xo.builders', '-u', username, '-p', password
+#         ], capture_output=True, text=True)
+#         if result.returncode == 0:
+#             return result.stdout
+#         else:
+#             return f"Error running docker login: {result.stderr}"
+#     except FileNotFoundError:
+#         return "Docker command not found. Please ensure Docker is installed and in PATH."
+#     except subprocess.SubprocessError as e:
+#         return f"Error executing command: {str(e)}"
+#     except Exception as e:
+#         return f"An unexpected error occurred: {str(e)}"
+
+# @mcp.tool()
+# def xo_harbor_build_image(project_name: str, image_name: str) -> str:
+#     """
+#     Build a Harbor image with the tag registry.xo.builders/xoeliza/agentv1 .
+#     Equivalent to: docker build -t registry.xo.builders/xoeliza/agentv1 .
+#     """
+#     import subprocess
+#     try:
+#         result = subprocess.run([
+#             'docker', 'build', '-t', f'registry.xo.builders/{project_name}/{image_name}', '.'
+#         ], capture_output=True, text=True)
+#         if result.returncode == 0:
+#             return result.stdout
+#         else:
+#             return f"Error running docker build: {result.stderr}"
+#     except FileNotFoundError:
+#         return "Docker command not found. Please ensure Docker is installed and in PATH."
+#     except subprocess.SubprocessError as e:
+#         return f"Error executing command: {str(e)}"
+#     except Exception as e:
+#         return f"An unexpected error occurred: {str(e)}"
+
+# @mcp.tool()
+# def xo_harbor_push_image(project_name: str, image_name: str) -> str:
+#     """
+#     Push the Harbor image 'registry.xo.builders/xoeliza/agentv1' to the registry.
+#     Equivalent to: docker push registry.xo.builders/xoeliza/agentv1
+#     """
+#     import subprocess
+#     try:
+#         result = subprocess.run([
+#             'docker', 'push', f'registry.xo.builders/{project_name}/{image_name}'
+#         ], capture_output=True, text=True)
+#         if result.returncode == 0:
+#             return result.stdout
+#         else:
+#             return f"Error running docker push: {result.stderr}"
+#     except FileNotFoundError:
+#         return "Docker command not found. Please ensure Docker is installed and in PATH."
+#     except subprocess.SubprocessError as e:
+#         return f"Error executing command: {str(e)}"
+#     except Exception as e:
+#         return f"An unexpected error occurred: {str(e)}"
+
+# def get_registry_details(deployment_token: str) -> dict:
+#     """
+#     Get the registry details from the db using endpoint
+#     Arg: deployment_token 
+#     """
+#     return {}
+
+# @mcp.tool()
+# def deploy_to_xo(deployment_token: str) -> str:
+#     # fetch the project details from the db
+#     details = get_registry_details(deployment_token)
+#     project_name = details['project_name']
+#     image_name = details['image_name']
+    
+#     # login to harbor
+#     xo_harbor_login()
+
+#     # build the image
+#     xo_harbor_build_image(project_name, image_name)
+
+#     # push the image
+#     xo_harbor_push_image(project_name, image_name)
+
+@mcp.tool()
+def xo_expose_k8s_app(
+    workspace_name: str, 
+    app_name: str, 
+    domain_name: str, 
+    target_port: int
+    ) -> str:
+    """
+    Expose the k8s app to the domain name by calling the /expose-k8s-app endpoint
+    """
+    import requests
+    import os
+    
+    
+    url = "http://3.109.184.200:6002/expose-k8s-app"
+    headers = {
+        "Content-Type": "application/json",
+        "Access-Token": os.getenv("ACCESS_TOKEN")
+    }
+    data = {
+        "workspace_name": workspace_name,
+        "app_name": app_name, 
+        "domain_name": domain_name,
+        "target_port": target_port
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        return response.json()
+    except requests.exceptions.HTTPError as http_err:
+        return f"HTTP error occurred: {http_err} - {response.text}"
+    except requests.exceptions.ConnectionError as conn_err:
+        return f"Connection error occurred: {conn_err}"
+    except requests.exceptions.Timeout as timeout_err:
+        return f"Timeout error occurred: {timeout_err}"
+    except requests.exceptions.RequestException as req_err:
+        return f"An error occurred: {req_err}"
+    except Exception as e:
+        return str(e)
+    

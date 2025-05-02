@@ -8,3 +8,14 @@ wheels/
 
 # Virtual environments
 .venv
+.environments
+# Local files
+dontpush.txt
+deploy-to-xo.txt
+deploy_to_xo_flow.txt
+
+# Environment variables
+.env
+
+# Docker files
+docker-compose.yml
