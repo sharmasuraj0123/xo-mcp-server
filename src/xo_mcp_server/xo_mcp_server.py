@@ -3,27 +3,34 @@ import requests
 import os
 
 mcp = FastMCP("XO-MCP-Server")
+backend_url = "https://devops-agent-api.xo.builders"
 
 @mcp.tool()
 def xo_k8s_deployment(
-    registry_user: str, 
-    registry_access_token: str, 
-    image_name: str, 
-    workspace_name: str, 
-    app_name: str
+    # registry_user: str, 
+    # registry_access_token: str, 
+    # image_name: str, 
+    # workspace_name: str, 
+    # app_name: str
     ) -> str:
 
-    url = "http://3.109.184.200:5009/k8s-deployment"
+    url = f"{backend_url}/k8s-deployment"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
     }
+
+    deployment_id = os.getenv("DEPLOYMENT_ID") or None
+    if not deployment_id:
+        return "DEPLOYMENT_ID environment variable is not set"
+
     data = {
-        "registry_user": registry_user,
-        "registry_access_token": registry_access_token,
-        "image_name": image_name,
-        "workspace_name": workspace_name,
-        "app_name": app_name
+        # "registry_user": registry_user,
+        # "registry_access_token": registry_access_token,
+        # "image_name": image_name,
+        # "workspace_name": workspace_name,
+        # "app_name": app_name
+        "DEPLOYMENT_ID": deployment_id
     }
 
     try:
@@ -42,17 +49,23 @@ def xo_k8s_deployment(
 
 @mcp.tool()
 def xo_start_k8s_deployment(
-    workspace_name: str,
-    app_name: str
+    # workspace_name: str,
+    # app_name: str
 ) -> str:
-    url = "http://3.109.184.200:5009/start-k8s-deployment"
+    url = f"{backend_url}/start-k8s-deployment"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
     }
+
+    deployment_id = os.getenv("DEPLOYMENT_ID") or None
+    if not deployment_id:
+        return "DEPLOYMENT_ID environment variable is not set"
+
     data = {
-        "workspace_name": workspace_name,
-        "app_name": app_name
+        # "workspace_name": workspace_name,
+        # "app_name": app_name
+        "DEPLOYMENT_ID": deployment_id
     }
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -70,17 +83,23 @@ def xo_start_k8s_deployment(
 
 @mcp.tool()
 def xo_stop_k8s_deployment(
-    workspace_name: str,
-    app_name: str
+    # workspace_name: str,
+    # app_name: str
 ) -> str:
-    url = "http://3.109.184.200:5009/stop-k8s-deployment"
+    url = f"{backend_url}/stop-k8s-deployment"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
     }
+
+    deployment_id = os.getenv("DEPLOYMENT_ID") or None
+    if not deployment_id:
+        return "DEPLOYMENT_ID environment variable is not set"
+
     data = {
-        "workspace_name": workspace_name,
-        "app_name": app_name
+        # "workspace_name": workspace_name,
+        # "app_name": app_name
+        "DEPLOYMENT_ID": deployment_id
     }
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -98,17 +117,23 @@ def xo_stop_k8s_deployment(
     
 @mcp.tool()
 def xo_remove_k8s_deployment(
-    workspace_name: str,
-    app_name: str
+    # workspace_name: str,
+    # app_name: str
 ) -> str:
-    url = "http://3.109.184.200:5009/remove-k8s-deployment"
+    url = f"{backend_url}/remove-k8s-deployment"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
     }
+
+    deployment_id = os.getenv("DEPLOYMENT_ID") or None
+    if not deployment_id:
+        return "DEPLOYMENT_ID environment variable is not set"
+
     data = {
-        "workspace_name": workspace_name,
-        "app_name": app_name
+        # "workspace_name": workspace_name,
+        # "app_name": app_name
+        "DEPLOYMENT_ID": deployment_id
     }
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -126,17 +151,23 @@ def xo_remove_k8s_deployment(
     
 @mcp.tool()
 def xo_get_k8s_pod_logs(
-    workspace_name: str,
-    app_name: str
+    # workspace_name: str,
+    # app_name: str
 ) -> str:
-    url = "http://3.109.184.200:5009/get-k8s-pod-logs"
+    url = f"{backend_url}/get-k8s-pod-logs"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
     }
+
+    deployment_id = os.getenv("DEPLOYMENT_ID") or None
+    if not deployment_id:
+        return "DEPLOYMENT_ID environment variable is not set"
+
     data = {
-        "workspace_name": workspace_name,
-        "app_name": app_name
+        # "workspace_name": workspace_name,
+        # "app_name": app_name
+        "DEPLOYMENT_ID": deployment_id
     }
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -269,10 +300,10 @@ def xo_get_docker_containers() -> str:
 
 @mcp.tool()
 def xo_expose_k8s_app(
-    workspace_name: str, 
-    app_name: str, 
-    domain_name: str, 
-    target_port: int
+    # workspace_name: str, 
+    # app_name: str, 
+    # domain_name: str, 
+    # target_port: int
     ) -> str:
     """
     Expose the k8s app to the domain name by calling the /expose-k8s-app endpoint
@@ -281,16 +312,22 @@ def xo_expose_k8s_app(
     import os
     
     
-    url = "http://3.109.184.200:6002/expose-k8s-app"
+    url = f"{backend_url}/expose-k8s-app"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
     }
+
+    deployment_id = os.getenv("DEPLOYMENT_ID") or None
+    if not deployment_id:
+        return "DEPLOYMENT_ID environment variable is not set"
+
     data = {
-        "workspace_name": workspace_name,
-        "app_name": app_name, 
-        "domain_name": domain_name,
-        "target_port": target_port
+        # "workspace_name": workspace_name,
+        # "app_name": app_name, 
+        # "domain_name": domain_name,
+        # "target_port": target_port
+        "DEPLOYMENT_ID": deployment_id
     }
 
     try:

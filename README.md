@@ -62,3 +62,70 @@ The server supports various configuration options through the MCP server setting
 - Python 3.x
 - uv package manager
 - Additional dependencies as specified in pyproject.toml
+
+### Working With XO MCP
+Step 1: Goto our frontend, login to our app and create a project by giving it a project name:
+```json
+{
+    "project_name": "newproj01"
+}
+```
+
+Outcome:
+You will get an robot_info.name and robot_info.secret and a DEPLOYMENT_ID
+
+Step 2: Execute the below cmds:
+
+```
+docker login registry.xo.builders -u 'username' -p your_password
+```
+
+- username is same as robot_info.name and it should be in quotes i.e 'xo-projname+imagename'
+- password is same as robot_info.secret
+
+```
+docker image build -t registry.xo.builders/newproj01/newimgname .
+```
+
+====== OR ========
+
+```
+docker build --platform linux/amd64,linux/arm64 -t registry.xo.builders/newproj01/newimgname:latest .
+```
+
+```
+docker image push registry.xo.builders/projname/newimgname
+```
+
+Step 3: Open the cursor settings and goto MCP and add our MCP Server:
+- more details above
+
+Step 4: In our MCP env, provide DEPLOYMENT_ID you got on Step 1
+
+Step 5: Type this to cursor chat:
+Could you please deploy to xo k8s:
+```json
+{
+    "image_name": "newimgname",
+    "workspace_name": "newworkspacename",
+    "app_name": "newappname"
+}
+```
+
+Step 6:You can now perform other optional operations:
+- Stop XO K8S deployment
+- Remove XO K8S deployment
+- Start XO K*S Deployment
+- Get logs
+
+Step 7: Type this to chat:
+Expose XO k8s app:
+```json
+{
+    "workspace_name": "newworkspacename",
+    "app_name": "newappname",
+    "domain_name": "newappname",
+    "target_port": 3000
+}
+```
+
