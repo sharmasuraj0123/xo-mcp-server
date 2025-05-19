@@ -6,13 +6,10 @@ mcp = FastMCP("XO-MCP-Server")
 backend_url = "https://devops-agent-api.xo.builders"
 
 @mcp.tool()
-def xo_k8s_deployment(
-    # registry_user: str, 
-    # registry_access_token: str, 
-    # image_name: str, 
-    # workspace_name: str, 
-    # app_name: str
-    ) -> str:
+def deploy_to_xo() -> str:
+    '''
+    Deploy to XO
+    '''
 
     url = f"{backend_url}/k8s-deployment"
     headers = {
@@ -24,14 +21,7 @@ def xo_k8s_deployment(
     if not deployment_id:
         return "DEPLOYMENT_ID environment variable is not set"
 
-    data = {
-        # "registry_user": registry_user,
-        # "registry_access_token": registry_access_token,
-        # "image_name": image_name,
-        # "workspace_name": workspace_name,
-        # "app_name": app_name
-        "DEPLOYMENT_ID": deployment_id
-    }
+    data = {"DEPLOYMENT_ID": deployment_id}
 
     try:
         response = requests.post(url, headers=headers, json=data)
@@ -48,10 +38,11 @@ def xo_k8s_deployment(
         return str(e)
 
 @mcp.tool()
-def xo_start_k8s_deployment(
-    # workspace_name: str,
-    # app_name: str
-) -> str:
+def start_xo_app() -> str:
+    '''
+    Start the XO app
+    '''
+
     url = f"{backend_url}/start-k8s-deployment"
     headers = {
         "Content-Type": "application/json",
@@ -62,11 +53,7 @@ def xo_start_k8s_deployment(
     if not deployment_id:
         return "DEPLOYMENT_ID environment variable is not set"
 
-    data = {
-        # "workspace_name": workspace_name,
-        # "app_name": app_name
-        "DEPLOYMENT_ID": deployment_id
-    }
+    data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
         return response.json()
@@ -82,10 +69,11 @@ def xo_start_k8s_deployment(
         return str(e)     
 
 @mcp.tool()
-def xo_stop_k8s_deployment(
-    # workspace_name: str,
-    # app_name: str
-) -> str:
+def stop_xo_app() -> str:
+    '''
+    Stop the XO app
+    '''
+
     url = f"{backend_url}/stop-k8s-deployment"
     headers = {
         "Content-Type": "application/json",
@@ -96,11 +84,7 @@ def xo_stop_k8s_deployment(
     if not deployment_id:
         return "DEPLOYMENT_ID environment variable is not set"
 
-    data = {
-        # "workspace_name": workspace_name,
-        # "app_name": app_name
-        "DEPLOYMENT_ID": deployment_id
-    }
+    data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
         return response.json()
@@ -116,10 +100,11 @@ def xo_stop_k8s_deployment(
         return str(e)
     
 @mcp.tool()
-def xo_remove_k8s_deployment(
-    # workspace_name: str,
-    # app_name: str
-) -> str:
+def remove_xo_app() -> str:
+    '''
+    Remove the XO app
+    '''
+
     url = f"{backend_url}/remove-k8s-deployment"
     headers = {
         "Content-Type": "application/json",
@@ -130,11 +115,7 @@ def xo_remove_k8s_deployment(
     if not deployment_id:
         return "DEPLOYMENT_ID environment variable is not set"
 
-    data = {
-        # "workspace_name": workspace_name,
-        # "app_name": app_name
-        "DEPLOYMENT_ID": deployment_id
-    }
+    data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
         return response.json()
@@ -150,10 +131,11 @@ def xo_remove_k8s_deployment(
         return str(e)   
     
 @mcp.tool()
-def xo_get_k8s_pod_logs(
-    # workspace_name: str,
-    # app_name: str
-) -> str:
+def get_xo_app_logs() -> str:
+    '''
+    Get the XO app logs
+    '''
+
     url = f"{backend_url}/get-k8s-pod-logs"
     headers = {
         "Content-Type": "application/json",
@@ -164,11 +146,7 @@ def xo_get_k8s_pod_logs(
     if not deployment_id:
         return "DEPLOYMENT_ID environment variable is not set"
 
-    data = {
-        # "workspace_name": workspace_name,
-        # "app_name": app_name
-        "DEPLOYMENT_ID": deployment_id
-    }
+    data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
         return response.json()
@@ -184,133 +162,10 @@ def xo_get_k8s_pod_logs(
         return str(e)
 
 @mcp.tool()
-def xo_get_docker_containers() -> str:
-    """
-    Run docker ps command and return the list of running containers
-    """
-    try:
-        # Using subprocess to run the shell command
-        import subprocess
-        result = subprocess.run(['docker', 'ps'], capture_output=True, text=True)
-        if result.returncode == 0:
-            return result.stdout
-        else:
-            return f"Error running docker ps: {result.stderr}"
-    except FileNotFoundError:
-        return "Docker command not found. Please ensure Docker is installed and in PATH"
-    except subprocess.SubprocessError as e:
-        return f"Error executing command: {str(e)}"
-    except Exception as e:
-        return f"An unexpected error occurred: {str(e)}"
-
-# @mcp.tool()
-# def xo_harbor_login() -> str:
-#     """
-#     Log in to Harbor using username and password from environment variables.
-#     Environment variables:
-#       - harbor_username
-#       - harbor_password
-#     """
-#     import subprocess
-#     username = os.getenv("harbor_username")
-#     password = os.getenv("harbor_password")
-#     if not username or not password:
-#         return "harbor_username or harbor_password environment variable not set."
-#     try:
-#         result = subprocess.run([
-#             'docker', 'login', 'registry.xo.builders', '-u', username, '-p', password
-#         ], capture_output=True, text=True)
-#         if result.returncode == 0:
-#             return result.stdout
-#         else:
-#             return f"Error running docker login: {result.stderr}"
-#     except FileNotFoundError:
-#         return "Docker command not found. Please ensure Docker is installed and in PATH."
-#     except subprocess.SubprocessError as e:
-#         return f"Error executing command: {str(e)}"
-#     except Exception as e:
-#         return f"An unexpected error occurred: {str(e)}"
-
-# @mcp.tool()
-# def xo_harbor_build_image(project_name: str, image_name: str) -> str:
-#     """
-#     Build a Harbor image with the tag registry.xo.builders/xoeliza/agentv1 .
-#     Equivalent to: docker build -t registry.xo.builders/xoeliza/agentv1 .
-#     """
-#     import subprocess
-#     try:
-#         result = subprocess.run([
-#             'docker', 'build', '-t', f'registry.xo.builders/{project_name}/{image_name}', '.'
-#         ], capture_output=True, text=True)
-#         if result.returncode == 0:
-#             return result.stdout
-#         else:
-#             return f"Error running docker build: {result.stderr}"
-#     except FileNotFoundError:
-#         return "Docker command not found. Please ensure Docker is installed and in PATH."
-#     except subprocess.SubprocessError as e:
-#         return f"Error executing command: {str(e)}"
-#     except Exception as e:
-#         return f"An unexpected error occurred: {str(e)}"
-
-# @mcp.tool()
-# def xo_harbor_push_image(project_name: str, image_name: str) -> str:
-#     """
-#     Push the Harbor image 'registry.xo.builders/xoeliza/agentv1' to the registry.
-#     Equivalent to: docker push registry.xo.builders/xoeliza/agentv1
-#     """
-#     import subprocess
-#     try:
-#         result = subprocess.run([
-#             'docker', 'push', f'registry.xo.builders/{project_name}/{image_name}'
-#         ], capture_output=True, text=True)
-#         if result.returncode == 0:
-#             return result.stdout
-#         else:
-#             return f"Error running docker push: {result.stderr}"
-#     except FileNotFoundError:
-#         return "Docker command not found. Please ensure Docker is installed and in PATH."
-#     except subprocess.SubprocessError as e:
-#         return f"Error executing command: {str(e)}"
-#     except Exception as e:
-#         return f"An unexpected error occurred: {str(e)}"
-
-# def get_registry_details(deployment_token: str) -> dict:
-#     """
-#     Get the registry details from the db using endpoint
-#     Arg: deployment_token 
-#     """
-#     return {}
-
-# @mcp.tool()
-# def deploy_to_xo(deployment_token: str) -> str:
-#     # fetch the project details from the db
-#     details = get_registry_details(deployment_token)
-#     project_name = details['project_name']
-#     image_name = details['image_name']
-    
-#     # login to harbor
-#     xo_harbor_login()
-
-#     # build the image
-#     xo_harbor_build_image(project_name, image_name)
-
-#     # push the image
-#     xo_harbor_push_image(project_name, image_name)
-
-@mcp.tool()
-def xo_expose_k8s_app(
-    # workspace_name: str, 
-    # app_name: str, 
-    # domain_name: str, 
-    # target_port: int
-    ) -> str:
-    """
-    Expose the k8s app to the domain name by calling the /expose-k8s-app endpoint
-    """
-    import requests
-    import os
-    
+def expose_xo_app() -> str:
+    '''
+    Expose the XO app to the domain name by calling the /expose-k8s-app endpoint
+    '''
     
     url = f"{backend_url}/expose-k8s-app"
     headers = {
@@ -322,13 +177,7 @@ def xo_expose_k8s_app(
     if not deployment_id:
         return "DEPLOYMENT_ID environment variable is not set"
 
-    data = {
-        # "workspace_name": workspace_name,
-        # "app_name": app_name, 
-        # "domain_name": domain_name,
-        # "target_port": target_port
-        "DEPLOYMENT_ID": deployment_id
-    }
+    data = {"DEPLOYMENT_ID": deployment_id}
 
     try:
         response = requests.post(url, headers=headers, json=data)
