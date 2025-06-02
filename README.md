@@ -44,7 +44,11 @@ To run the server directly from GitHub, use the following configuration:
             "command": "uvx",
             "args": [
                 "git+https://github.com/sharmasuraj0123/xo-mcp-server.git"
-            ]
+            ],
+            "env": {
+                "ACCESS_TOKEN": "your_access_token:contact_team_XO",
+                "DEPLOYMENT_ID": "deployment_id_can_be_fount_at:https://launchpad.xo.builders/"
+      }
         }
     }
 }
@@ -74,7 +78,7 @@ Step 1: Goto our frontend, login to our app and create a project by giving it a 
 Outcome:
 You will get an robot_info.name and robot_info.secret and a DEPLOYMENT_ID
 
-Step 2: Execute the below cmds:
+Step 2: Execute the below commands (commands can be shown in our frontend: https://launchpad.xo.builders/):
 
 ```
 docker login registry.xo.builders -u 'username' -p your_password
@@ -100,32 +104,36 @@ docker image push registry.xo.builders/projname/newimgname
 Step 3: Open the cursor settings and goto MCP and add our MCP Server:
 - more details above
 
-Step 4: In our MCP env, provide DEPLOYMENT_ID you got on Step 1
+Step 4: In our MCP env, provide DEPLOYMENT_ID you got on Step 1:
 
-Step 5: Type this to cursor chat:
-Could you please deploy to xo k8s:
+- MCP Should look something like:
 ```json
 {
-    "image_name": "newimgname",
-    "workspace_name": "newworkspacename",
-    "app_name": "newappname"
+    "mcpServers": {
+        "XO-MCP-Server": {
+            "command": "uvx",
+            "args": [
+                "git+https://github.com/sharmasuraj0123/xo-mcp-server.git"
+            ],
+            "env": {
+                "ACCESS_TOKEN": "your_access_token:contact_team_XO",
+                "DEPLOYMENT_ID": "deployment_id_can_be_fount_at:https://launchpad.xo.builders/"
+      }
+        }
+    }
 }
 ```
+
+Step 5: Hurray! 🎉 You have successfully completed the XO-MCP setup.
+
+- Type this to cursor chat: Deploy to XO
+- Outcome: You have Successfully deloyed to XO.
 
 Step 6:You can now perform other optional operations:
-- Stop XO K8S deployment
-- Remove XO K8S deployment
-- Start XO K*S Deployment
-- Get logs
+- Stop XO app
+- Remove XO app
+- Start XO app
+- Get XO app logs
 
-Step 7: Type this to chat:
-Expose XO k8s app:
-```json
-{
-    "workspace_name": "newworkspacename",
-    "app_name": "newappname",
-    "domain_name": "newappname",
-    "target_port": 3000
-}
-```
+Step 7: Type this to chat: Expose XO app:
 
