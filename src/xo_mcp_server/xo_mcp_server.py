@@ -11,7 +11,7 @@ def deploy_to_xo() -> str:
     Deploy to XO
     '''
 
-    url = f"{backend_url}/k8s-deployment"
+    url = f"{backend_url}/deploy-to-xo"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
@@ -43,7 +43,7 @@ def start_xo_app() -> str:
     Start the XO app
     '''
 
-    url = f"{backend_url}/start-k8s-deployment"
+    url = f"{backend_url}/start-xo-app"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
@@ -74,7 +74,7 @@ def stop_xo_app() -> str:
     Stop the XO app
     '''
 
-    url = f"{backend_url}/stop-k8s-deployment"
+    url = f"{backend_url}/stop-xo-app"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
@@ -105,7 +105,7 @@ def remove_xo_app() -> str:
     Remove the XO app
     '''
 
-    url = f"{backend_url}/remove-k8s-deployment"
+    url = f"{backend_url}/remove-xo-app"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
@@ -136,7 +136,7 @@ def get_xo_app_logs() -> str:
     Get the XO app logs
     '''
 
-    url = f"{backend_url}/get-k8s-pod-logs"
+    url = f"{backend_url}/get-xo-app-logs"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
@@ -164,10 +164,10 @@ def get_xo_app_logs() -> str:
 @mcp.tool()
 def expose_xo_app() -> str:
     '''
-    Expose the XO app to the domain name by calling the /expose-k8s-app endpoint
+    Expose the XO app to the domain name by calling the /expose-xo-app endpoint
     '''
     
-    url = f"{backend_url}/expose-k8s-app"
+    url = f"{backend_url}/expose-xo-app"
     headers = {
         "Content-Type": "application/json",
         "Access-Token": os.getenv("ACCESS_TOKEN")
