@@ -25,7 +25,7 @@ def deploy_to_xo() -> str:
 
     try:
         response = requests.post(url, headers=headers, json=data)
-        return response.json()
+        return response.text
     except requests.exceptions.HTTPError as http_err:
         return f"HTTP error occurred: {http_err} - {response.text}"
     except requests.exceptions.ConnectionError as conn_err:
@@ -87,7 +87,7 @@ def stop_xo_app() -> str:
     data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
-        return response.json()
+        return response.text
     except requests.exceptions.HTTPError as http_err:
         return f"HTTP error occurred: {http_err} - {response.text}"
     except requests.exceptions.ConnectionError as conn_err:
@@ -118,7 +118,7 @@ def remove_xo_app() -> str:
     data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
-        return response.json()
+        return response.text
     except requests.exceptions.HTTPError as http_err:
         return f"HTTP error occurred: {http_err} - {response.text}"
     except requests.exceptions.ConnectionError as conn_err:
@@ -149,7 +149,7 @@ def get_xo_app_logs() -> str:
     data = {"DEPLOYMENT_ID": deployment_id}
     try:
         response = requests.post(url, headers=headers, json=data)
-        return response.json()
+        return response.text
     except requests.exceptions.HTTPError as http_err:
         return f"HTTP error occurred: {http_err} - {response.text}"
     except requests.exceptions.ConnectionError as conn_err:
@@ -181,7 +181,7 @@ def expose_xo_app() -> str:
 
     try:
         response = requests.post(url, headers=headers, json=data)
-        return response.json()
+        return response.text
     except requests.exceptions.HTTPError as http_err:
         return f"HTTP error occurred: {http_err} - {response.text}"
     except requests.exceptions.ConnectionError as conn_err:

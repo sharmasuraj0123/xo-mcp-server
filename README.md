@@ -23,7 +23,8 @@ To run the server locally, add the following configuration to your MCP server se
             "command": "uv",
             "args": [
                 "--directory",
-                "D:/Work/XO/MCP-Servers/xo-mcp-server",
+                // "D:/Work/XO/MCP-Servers/xo-mcp-server",
+                "/Users/seemanttripathi/Documents/Work/XO/MCP/xo-mcp-server",
                 "run",
                 "-m",
                 "xo_mcp_server"
