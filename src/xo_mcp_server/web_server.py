@@ -482,7 +482,7 @@ async def generate_sse_response(data: dict) -> AsyncGenerator[str, None]:
     response_data = json.dumps(data)
     yield f"data: {response_data}\n\n"
 
-def run_server(host: str = "127.0.0.1", port: int = 5000):
+def run_server(host: str = "127.0.0.1", port: int = 5001):
     """
     Run the web server
     """

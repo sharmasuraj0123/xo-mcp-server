@@ -298,5 +298,5 @@ def expose_xo_app() -> str:
 # Server configuration for deployment
 if __name__ == "__main__":
     # Run the MCP server on a specific host and port for deployment
-    mcp.run(host="0.0.0.0", port=5000)
+    mcp.run(host="0.0.0.0", port=5001)
     
