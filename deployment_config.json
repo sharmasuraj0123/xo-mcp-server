@@ -1,0 +1,45 @@
+{
+  "deployment": {
+    "name": "xo-mcp-server",
+    "version": "1.0.0",
+    "description": "XO MCP Server with SSE support",
+    "endpoints": {
+      "mcp": "/mcp",
+      "sse": "/sse",
+      "health": "/health"
+    },
+    "environment_variables": {
+      "ACCESS_TOKEN": "your_access_token_here",
+      "DEPLOYMENT_ID": "your_deployment_id_here",
+      "PORT": "5000",
+      "HOST": "0.0.0.0"
+    },
+    "docker": {
+      "image": "xo-mcp-server",
+      "port": "5000",
+      "health_check": "/health"
+    },
+    "deployment_platforms": {
+      "railway": {
+        "command": "python -m xo_mcp_server",
+        "port": "5000",
+        "build_command": "pip install -e ."
+      },
+      "render": {
+        "command": "python -m xo_mcp_server",
+        "port": "5000",
+        "build_command": "pip install -e ."
+      },
+      "heroku": {
+        "command": "python -m xo_mcp_server",
+        "port": "5000",
+        "build_command": "pip install -e ."
+      },
+      "vercel": {
+        "command": "python -m xo_mcp_server",
+        "port": "5000",
+        "build_command": "pip install -e ."
+      }
+    }
+  }
+} 
