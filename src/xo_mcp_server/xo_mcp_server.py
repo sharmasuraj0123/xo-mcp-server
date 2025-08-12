@@ -331,6 +331,40 @@ def update_knowledgebase_using_text(project_name: str, text_content: str, text_i
     except Exception as e:
         return str(e)
 
+@mcp.tool()
+def ask_question(project_name: str, question: str, user_id: str = "default_user", agent_type: str = "normal", message_type: str = "@xo") -> str:
+    '''
+    Ask a question to the knowledge base
+    '''
+    
+    url = f"{SWARM_URL}/ask_question"
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "project_name": project_name,
+        "user_id": user_id,
+        "question": question,
+        "type": agent_type,
+        "message_type": message_type
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        return f"Response: {response.text} and data: {data}"
+    except requests.exceptions.HTTPError as http_err:
+        return f"HTTP error occurred: {http_err} - {response.text}"
+    except requests.exceptions.ConnectionError as conn_err:
+        return f"Connection error occurred: {conn_err}"
+    except requests.exceptions.Timeout as timeout_err:
+        return f"Timeout error occurred: {timeout_err}"
+    except requests.exceptions.RequestException as req_err:
+        return f"An error occurred: {req_err}"
+    except Exception as e:
+        return str(e)
+
 # Server configuration for deployment
 if __name__ == "__main__":
     # Run the MCP server on a specific host and port for deployment
