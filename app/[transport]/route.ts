@@ -18,6 +18,28 @@ const handler = createMcpHandler((server) => {
 			};
 		}
 	);
+
+	server.tool(
+		"hello",
+		"A simple greeting tool that says hello",
+		{},
+		async () => {
+			return {
+				content: [{ type: "text", text: "Hi I am hello" }],
+			};
+		}
+	);
+
+	server.tool(
+		"search",
+		"A simple search tool that identifies itself",
+		{},
+		async () => {
+			return {
+				content: [{ type: "text", text: "Hi I am search" }],
+			};
+		}
+	);
 });
 
 const authHandler = withMcpAuth(
